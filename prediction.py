@@ -1,6 +1,15 @@
 import keras
 import cv2
 import numpy as np
+from keras.applications import ResNet50
+from keras.applications import InceptionV3
+from keras.applications import Xception # TensorFlow ONLY
+from keras.applications import VGG16
+from keras.applications import VGG19
+from keras.applications import imagenet_utils
+from keras.applications.inception_v3 import preprocess_input
+from keras.preprocessing.image import img_to_array
+from keras.preprocessing.image import load_img
 from keras.models import Sequential
 from keras.utils import np_utils
 from keras.preprocessing.image import ImageDataGenerator
@@ -10,7 +19,6 @@ from keras.models import model_from_json
 from keras.datasets import mnist, fashion_mnist,cifar10
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 from PIL import Image
 from keras.models import model_from_json
@@ -19,9 +27,39 @@ import os
 import glob
 import csv
 
+
+
+
 class predictor:
 	def __init__(self):
 		pass
+
+	def general_pred(self):
+		MODELS = {
+			"vgg16": VGG16,
+			"vgg19": VGG19,
+			"inception": InceptionV3,
+			"xception": Xception, # TensorFlow ONLY
+			"resnet": ResNet50
+		}
+
+		inputShape = (224, 224)
+		preprocess = imagenet_utils.preprocess_input
+
+		Network = MODELS["vgg19"]
+		model = Network(weights="imagenet")
+		image = load_img("input.png", target_size=inputShape)
+		image = img_to_array(image)
+		image = np.expand_dims(image, axis=0)
+		image = preprocess(image)
+		preds = model.predict(image)
+		P = imagenet_utils.decode_predictions(preds)
+
+		result = []
+		for (i, (imagenetID, label, prob)) in enumerate(P[0]):
+			result.append("{}. {}: {:.2f}%".format(i + 1, label, prob * 100))
+		return result
+
 
 	def pred_blur(self):
 		class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer',

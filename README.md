@@ -14,3 +14,9 @@ Most of these applications are using cloud storage to keep photos because it’s
 However, the safety and privacy of the photos have become a serious issue due to reports of government monitor public activities online, and many photo leakage of iCloud. Images contain many information about the image uploader, 
 so applications can provide users friend suggestions based on their photos, however, this also makes photo sharing dangerous as attackers can easily get users’ address, personal information, even their interpersonal relationships. 
 Obfuscation of images before uploading them on the cloud becomes necessary to protect user privacy.
+
+## Built With
+
+* PyQt5 framework for the GUI
+* Tensorflow 
+* Keras framework 
